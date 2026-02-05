@@ -1,0 +1,649 @@
+﻿trip,date,item,category,method,cost,cost_per_item,number_of_items,notes
+Trip1,16/4/2021,ARU,equipment,PAM,28560,1190,24,https://www.frontierlabs.com.au/product-page/solar-bar
+Trip1,16/4/2021,sd cards,equipment,PAM,4944,103,48,"https://www.amazon.com.au/SanDisk-512GB-Extreme-UHS-I-Memory/dp/B09X7DZM1V/ref=sr_1_6?crid=1U0ZBOUDN9ZNY&dib=eyJ2IjoiMSJ9.eehQhD2zudLm6ObBEkNzDYZOCHrCl4TK0bEN5RUC0G0ZE4k8KfIhYMLWPy-tVC22GN2UXJluxQLJbL2gk0xFeIq_EivQaYdzOmChHLjLK7od57_zl7cot8paKugBdsGpFx1-6jS5ABOj0f0YU63z7DZA4FBRDfLRac8L5W2yFCU9GfWmYlLR6QX2dSGe5S3g1PWjNgFSiihHjTiundTT8rq7cOn2Zdsi3DaBl5qspWuMTj7eemGJGyYWAOoBagz3GdeuYuzq3Uly5IDz0kjJ_uMreztRmbJCps4s9PSwlgg.PIe36iU5CbCReauW0WuBGvq3jkZe5j1r_PR-V_TLT0E&dib_tag=se&keywords=512gb+sd+card&qid=1718146633&sprefix=512gb+sd,aps,527&sr=8-6"
+Trip1,16/4/2021,battery,equipment,PAM,1200,50,24,https://www.jaycar.com.au/12v-9ah-sla-battery/p/SB2487
+Trip1,16/4/2021,deployment,deployment,PAM,0,,,
+Trip1,16/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,17/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,18/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,19/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,20/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,21/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,22/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,23/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,24/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,25/4/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip1,16/4/2021,live animal traps,equipment,OBM,10000,,,"1700 funnels, 3300 elliots, 1680 cages, 2500 pitfall, 400 fence roll"
+Trip1,16/4/2021,field gear,equipment,OBM,2000,,,
+Trip1,16/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,17/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,18/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,19/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,20/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,21/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,22/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,23/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,24/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,25/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,26/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,27/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,28/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,29/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,30/4/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,1/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,2/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,3/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,4/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,5/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,6/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,7/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,8/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,9/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,10/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,11/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,12/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,13/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,14/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,15/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,16/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,17/5/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,18/5/2021,,,,0,,,
+,19/5/2021,,,,0,,,
+,20/5/2021,,,,0,,,
+,21/5/2021,,,,0,,,
+,22/5/2021,,,,0,,,
+,23/5/2021,,,,0,,,
+,24/5/2021,,,,0,,,
+,25/5/2021,,,,0,,,
+,26/5/2021,,,,0,,,
+,27/5/2021,,,,0,,,
+,28/5/2021,,,,0,,,
+,29/5/2021,,,,0,,,
+,30/5/2021,,,,0,,,
+,31/5/2021,,,,0,,,
+Trip1,1/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,2/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,3/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,4/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,5/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,6/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,7/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,8/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,9/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,10/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,11/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,12/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,13/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,14/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,15/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,16/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,17/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,18/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,19/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,20/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,21/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,22/6/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,23/6/2021,,,,0,,,
+,24/6/2021,,,,0,,,
+,25/6/2021,,,,0,,,
+,26/6/2021,,,,0,,,
+,27/6/2021,,,,0,,,
+,28/6/2021,,,,0,,,
+,29/6/2021,,,,0,,,
+,30/6/2021,,,,0,,,
+,1/7/2021,,,,0,,,
+,2/7/2021,,,,0,,,
+Trip1,3/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,4/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,5/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,6/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,7/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,8/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,9/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,10/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,11/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,12/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip1,13/7/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,14/7/2021,,,,0,,,
+,15/7/2021,,,,0,,,
+,16/7/2021,,,,0,,,
+,17/7/2021,,,,0,,,
+,18/7/2021,,,,0,,,
+,19/7/2021,,,,0,,,
+,20/7/2021,,,,0,,,
+,21/7/2021,,,,0,,,
+,22/7/2021,,,,0,,,
+,23/7/2021,,,,0,,,
+,24/7/2021,,,,0,,,
+,25/7/2021,,,,0,,,
+,26/7/2021,,,,0,,,
+,27/7/2021,,,,0,,,
+,28/7/2021,,,,0,,,
+,29/7/2021,,,,0,,,
+,30/7/2021,,,,0,,,
+,31/7/2021,,,,0,,,
+,1/8/2021,,,,0,,,
+,2/8/2021,,,,0,,,
+,3/8/2021,,,,0,,,
+,4/8/2021,,,,0,,,
+,5/8/2021,,,,0,,,
+,6/8/2021,,,,0,,,
+,7/8/2021,,,,0,,,
+,8/8/2021,,,,0,,,
+,9/8/2021,,,,0,,,
+,10/8/2021,,,,0,,,
+,11/8/2021,,,,0,,,
+,12/8/2021,,,,0,,,
+,13/8/2021,,,,0,,,
+,14/8/2021,,,,0,,,
+,15/8/2021,,,,0,,,
+,16/8/2021,,,,0,,,
+,17/8/2021,,,,0,,,
+,18/8/2021,,,,0,,,
+,19/8/2021,,,,0,,,
+,20/8/2021,,,,0,,,
+,21/8/2021,,,,0,,,
+,22/8/2021,,,,0,,,
+,23/8/2021,,,,0,,,
+,24/8/2021,,,,0,,,
+,25/8/2021,,,,0,,,
+,26/8/2021,,,,0,,,
+,27/8/2021,,,,0,,,
+,28/8/2021,,,,0,,,
+,29/8/2021,,,,0,,,
+,30/8/2021,,,,0,,,
+,31/8/2021,,,,0,,,
+,1/9/2021,,,,0,,,
+,2/9/2021,,,,0,,,
+,3/9/2021,,,,0,,,
+,4/9/2021,,,,0,,,
+,5/9/2021,,,,0,,,
+,6/9/2021,,,,0,,,
+,7/9/2021,,,,0,,,
+,8/9/2021,,,,0,,,
+,9/9/2021,,,,0,,,
+,10/9/2021,,,,0,,,
+,11/9/2021,,,,0,,,
+,12/9/2021,,,,0,,,
+,13/9/2021,,,,0,,,
+,14/9/2021,,,,0,,,
+,15/9/2021,,,,0,,,
+,16/9/2021,,,,0,,,
+,17/9/2021,,,,0,,,
+,18/9/2021,,,,0,,,
+,19/9/2021,,,,0,,,
+,20/9/2021,,,,0,,,
+,21/9/2021,,,,0,,,
+,22/9/2021,,,,0,,,
+,23/9/2021,,,,0,,,
+,24/9/2021,,,,0,,,
+,25/9/2021,,,,0,,,
+Trip2,26/9/2021,sd cards + battery replacement,equipment,PAM,1024,,,
+Trip2,26/9/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,27/9/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,28/9/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,29/9/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,30/9/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,1/10/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,2/10/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,3/10/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,4/10/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,5/10/2021,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip2,26/9/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,26/9/2021,field gear,equipment,OBM,500,,,
+Trip2,27/9/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,28/9/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,29/9/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,30/9/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,1/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,2/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,3/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,4/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,5/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,6/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,7/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,8/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,9/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,10/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,11/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,12/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,13/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,14/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,15/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,16/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,17/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,18/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,19/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,20/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,21/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,22/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,23/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,24/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,25/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,26/10/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,27/10/2021,,,,0,,,
+,28/10/2021,,,,0,,,
+,29/10/2021,,,,0,,,
+,30/10/2021,,,,0,,,
+,31/10/2021,,,,0,,,
+,1/11/2021,,,,0,,,
+,2/11/2021,,,,0,,,
+,3/11/2021,,,,0,,,
+,4/11/2021,,,,0,,,
+,5/11/2021,,,,0,,,
+,6/11/2021,,,,0,,,
+,7/11/2021,,,,0,,,
+Trip2,8/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,9/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,10/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,11/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,12/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,13/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,14/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,15/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip2,16/11/2021,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,17/11/2021,,,,0,,,
+,18/11/2021,,,,0,,,
+,19/11/2021,,,,0,,,
+,20/11/2021,,,,0,,,
+,21/11/2021,,,,0,,,
+,22/11/2021,,,,0,,,
+,23/11/2021,,,,0,,,
+,24/11/2021,,,,0,,,
+,25/11/2021,,,,0,,,
+,26/11/2021,,,,0,,,
+,27/11/2021,,,,0,,,
+,28/11/2021,,,,0,,,
+,29/11/2021,,,,0,,,
+,30/11/2021,,,,0,,,
+,1/12/2021,,,,0,,,
+,2/12/2021,,,,0,,,
+,3/12/2021,,,,0,,,
+,4/12/2021,,,,0,,,
+,5/12/2021,,,,0,,,
+,6/12/2021,,,,0,,,
+,7/12/2021,,,,0,,,
+,8/12/2021,,,,0,,,
+,9/12/2021,,,,0,,,
+,10/12/2021,,,,0,,,
+,11/12/2021,,,,0,,,
+,12/12/2021,,,,0,,,
+,13/12/2021,,,,0,,,
+,14/12/2021,,,,0,,,
+,15/12/2021,,,,0,,,
+,16/12/2021,,,,0,,,
+,17/12/2021,,,,0,,,
+,18/12/2021,,,,0,,,
+,19/12/2021,,,,0,,,
+,20/12/2021,,,,0,,,
+,21/12/2021,,,,0,,,
+,22/12/2021,,,,0,,,
+,23/12/2021,,,,0,,,
+,24/12/2021,,,,0,,,
+,25/12/2021,,,,0,,,
+,26/12/2021,,,,0,,,
+,27/12/2021,,,,0,,,
+,28/12/2021,,,,0,,,
+,29/12/2021,,,,0,,,
+,30/12/2021,,,,0,,,
+,31/12/2021,,,,0,,,
+,1/1/2022,,,,0,,,
+,2/1/2022,,,,0,,,
+,3/1/2022,,,,0,,,
+,4/1/2022,,,,0,,,
+,5/1/2022,,,,0,,,
+,6/1/2022,,,,0,,,
+,7/1/2022,,,,0,,,
+,8/1/2022,,,,0,,,
+,9/1/2022,,,,0,,,
+,10/1/2022,,,,0,,,
+,11/1/2022,,,,0,,,
+,12/1/2022,,,,0,,,
+,13/1/2022,,,,0,,,
+,14/1/2022,,,,0,,,
+,15/1/2022,,,,0,,,
+,16/1/2022,,,,0,,,
+,17/1/2022,,,,0,,,
+,18/1/2022,,,,0,,,
+,19/1/2022,,,,0,,,
+,20/1/2022,,,,0,,,
+,21/1/2022,,,,0,,,
+,22/1/2022,,,,0,,,
+,23/1/2022,,,,0,,,
+,24/1/2022,,,,0,,,
+,25/1/2022,,,,0,,,
+,26/1/2022,,,,0,,,
+,27/1/2022,,,,0,,,
+,28/1/2022,,,,0,,,
+,29/1/2022,,,,0,,,
+,30/1/2022,,,,0,,,
+,31/1/2022,,,,0,,,
+,1/2/2022,,,,0,,,
+,2/2/2022,,,,0,,,
+,3/2/2022,,,,0,,,
+,4/2/2022,,,,0,,,
+,5/2/2022,,,,0,,,
+,6/2/2022,,,,0,,,
+,7/2/2022,,,,0,,,
+,8/2/2022,,,,0,,,
+,9/2/2022,,,,0,,,
+,10/2/2022,,,,0,,,
+,11/2/2022,,,,0,,,
+,12/2/2022,,,,0,,,
+,13/2/2022,,,,0,,,
+,14/2/2022,,,,0,,,
+,15/2/2022,,,,0,,,
+,16/2/2022,,,,0,,,
+,17/2/2022,,,,0,,,
+,18/2/2022,,,,0,,,
+,19/2/2022,,,,0,,,
+,20/2/2022,,,,0,,,
+,21/2/2022,,,,0,,,
+,22/2/2022,,,,0,,,
+,23/2/2022,,,,0,,,
+,24/2/2022,,,,0,,,
+,25/2/2022,,,,0,,,
+,26/2/2022,,,,0,,,
+,27/2/2022,,,,0,,,
+,28/2/2022,,,,0,,,
+,1/3/2022,,,,0,,,
+,2/3/2022,,,,0,,,
+,3/3/2022,,,,0,,,
+,4/3/2022,,,,0,,,
+,5/3/2022,,,,0,,,
+,6/3/2022,,,,0,,,
+,7/3/2022,,,,0,,,
+,8/3/2022,,,,0,,,
+,9/3/2022,,,,0,,,
+,10/3/2022,,,,0,,,
+,11/3/2022,,,,0,,,
+,12/3/2022,,,,0,,,
+,13/3/2022,,,,0,,,
+,14/3/2022,,,,0,,,
+,15/3/2022,,,,0,,,
+,16/3/2022,,,,0,,,
+,17/3/2022,,,,0,,,
+,18/3/2022,,,,0,,,
+,19/3/2022,,,,0,,,
+,20/3/2022,,,,0,,,
+,21/3/2022,,,,0,,,
+,22/3/2022,,,,0,,,
+,23/3/2022,,,,0,,,
+,24/3/2022,,,,0,,,
+,25/3/2022,,,,0,,,
+,26/3/2022,,,,0,,,
+,27/3/2022,,,,0,,,
+,28/3/2022,,,,0,,,
+,29/3/2022,,,,0,,,
+,30/3/2022,,,,0,,,
+,31/3/2022,,,,0,,,
+,1/4/2022,,,,0,,,
+,2/4/2022,,,,0,,,
+,3/4/2022,,,,0,,,
+,4/4/2022,,,,0,,,
+,5/4/2022,,,,0,,,
+,6/4/2022,,,,0,,,
+,7/4/2022,,,,0,,,
+,8/4/2022,,,,0,,,
+,9/4/2022,,,,0,,,
+,10/4/2022,,,,0,,,
+,11/4/2022,,,,0,,,
+,12/4/2022,,,,0,,,
+,13/4/2022,,,,0,,,
+,14/4/2022,,,,0,,,
+,15/4/2022,,,,0,,,
+,16/4/2022,,,,0,,,
+,17/4/2022,,,,0,,,
+,18/4/2022,,,,0,,,
+,19/4/2022,,,,0,,,
+,20/4/2022,,,,0,,,
+,21/4/2022,,,,0,,,
+,22/4/2022,,,,0,,,
+,23/4/2022,,,,0,,,
+,24/4/2022,,,,0,,,
+,25/4/2022,,,,0,,,
+Trip3,26/4/2022,sd cards + battery replacement,equipment,PAM,1024,,,
+Trip3,26/4/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,27/4/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,28/4/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,29/4/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,30/4/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,1/5/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,2/5/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,3/5/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,4/5/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,5/5/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip3,26/4/2022,field gear,equipment,OBM,500,,,
+Trip3,26/4/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,27/4/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,28/4/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,29/4/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,30/4/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,1/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,2/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,3/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,4/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,5/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,6/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,7/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,8/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,9/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,10/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,11/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,12/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,13/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,14/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,15/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,16/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,17/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,18/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,19/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,20/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,21/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,22/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,23/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,24/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,25/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,26/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,27/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,28/5/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,29/5/2022,,,,0,,,
+,30/5/2022,,,,0,,,
+,31/5/2022,,,,0,,,
+,1/6/2022,,,,0,,,
+,2/6/2022,,,,0,,,
+,3/6/2022,,,,0,,,
+,4/6/2022,,,,0,,,
+,5/6/2022,,,,0,,,
+Trip3,6/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,7/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,8/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,9/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,10/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,11/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,12/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,13/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,14/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,15/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,16/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,17/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,18/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,19/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,20/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,21/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,22/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,23/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,24/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,25/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,26/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,27/6/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,28/6/2022,,,,0,,,
+,29/6/2022,,,,0,,,
+,30/6/2022,,,,0,,,
+,1/7/2022,,,,0,,,
+,2/7/2022,,,,0,,,
+,3/7/2022,,,,0,,,
+,4/7/2022,,,,0,,,
+,5/7/2022,,,,0,,,
+,6/7/2022,,,,0,,,
+,7/7/2022,,,,0,,,
+,8/7/2022,,,,0,,,
+,9/7/2022,,,,0,,,
+,10/7/2022,,,,0,,,
+,11/7/2022,,,,0,,,
+,12/7/2022,,,,0,,,
+,13/7/2022,,,,0,,,
+,14/7/2022,,,,0,,,
+,15/7/2022,,,,0,,,
+,16/7/2022,,,,0,,,
+,17/7/2022,,,,0,,,
+,18/7/2022,,,,0,,,
+,19/7/2022,,,,0,,,
+,20/7/2022,,,,0,,,
+,21/7/2022,,,,0,,,
+,22/7/2022,,,,0,,,
+,23/7/2022,,,,0,,,
+,24/7/2022,,,,0,,,
+,25/7/2022,,,,0,,,
+,26/7/2022,,,,0,,,
+,27/7/2022,,,,0,,,
+,28/7/2022,,,,0,,,
+,29/7/2022,,,,0,,,
+,30/7/2022,,,,0,,,
+,31/7/2022,,,,0,,,
+,1/8/2022,,,,0,,,
+,2/8/2022,,,,0,,,
+,3/8/2022,,,,0,,,
+,4/8/2022,,,,0,,,
+Trip3,5/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,6/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,7/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,8/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,9/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,10/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,11/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,12/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,13/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,14/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip3,15/8/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,16/8/2022,,,,0,,,
+,17/8/2022,,,,0,,,
+,18/8/2022,,,,0,,,
+,19/8/2022,,,,0,,,
+,20/8/2022,,,,0,,,
+,21/8/2022,,,,0,,,
+,22/8/2022,,,,0,,,
+,23/8/2022,,,,0,,,
+,24/8/2022,,,,0,,,
+,25/8/2022,,,,0,,,
+,26/8/2022,,,,0,,,
+,27/8/2022,,,,0,,,
+,28/8/2022,,,,0,,,
+,29/8/2022,,,,0,,,
+,30/8/2022,,,,0,,,
+,31/8/2022,,,,0,,,
+,1/9/2022,,,,0,,,
+,2/9/2022,,,,0,,,
+,3/9/2022,,,,0,,,
+,4/9/2022,,,,0,,,
+,5/9/2022,,,,0,,,
+,6/9/2022,,,,0,,,
+,7/9/2022,,,,0,,,
+,8/9/2022,,,,0,,,
+,9/9/2022,,,,0,,,
+,10/9/2022,,,,0,,,
+,11/9/2022,,,,0,,,
+,12/9/2022,,,,0,,,
+,13/9/2022,,,,0,,,
+,14/9/2022,,,,0,,,
+,15/9/2022,,,,0,,,
+,16/9/2022,,,,0,,,
+,17/9/2022,,,,0,,,
+,18/9/2022,,,,0,,,
+,19/9/2022,,,,0,,,
+,20/9/2022,,,,0,,,
+,21/9/2022,,,,0,,,
+,22/9/2022,,,,0,,,
+,23/9/2022,,,,0,,,
+,24/9/2022,,,,0,,,
+,25/9/2022,,,,0,,,
+Trip4,26/9/2022,sd cards + battery replacement,equipment,PAM,1024,,,
+Trip4,26/9/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,27/9/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,28/9/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,29/9/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,30/9/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,1/10/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,2/10/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,3/10/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,4/10/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,5/10/2022,field costs,field costs,PAM,270,,,"10 days for deployment at 6 sites including travel, (salary staff, fuel vehicles, rental vehicle), staff per day, travel 3500 km"
+Trip4,26/9/2022,field gear,equipment,OBM,500,,,
+Trip4,26/9/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,27/9/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,28/9/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,29/9/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,30/9/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,1/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,2/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,3/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,4/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,5/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,6/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+,7/10/2022,,,,0,,,
+,8/10/2022,,,,0,,,
+,9/10/2022,,,,0,,,
+,10/10/2022,,,,0,,,
+Trip4,11/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,12/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,13/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,14/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,15/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,16/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,17/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,18/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,19/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,20/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,21/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,22/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,23/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,24/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,25/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,26/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,27/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,28/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,29/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,30/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,31/10/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,1/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,2/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,3/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,4/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,5/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,6/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,7/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,8/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,9/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,10/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,11/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,12/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,13/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,14/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,15/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,16/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,17/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,18/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,19/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,20/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,21/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,22/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,23/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,24/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,25/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,26/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,27/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,28/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,29/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,30/11/2022,field costs,field costs,OBM,1000,,,"surveys at 6 sites including travel, 3500 km, fuel on site, staff salary per day for 5 people, accommodation, food"
+Trip4,30/11/2022,field costs,field costs,PAM,0,,,
+Trip4,30/11/2022,data analysis,data analysis,PAM,4096,,,

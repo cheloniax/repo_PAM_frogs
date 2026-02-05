@@ -1,0 +1,1565 @@
+---
+title: "R Code for Hoefer et al. 2026 - Passive acoustic monitoring outperforms observer-based methods for Australian frog communities"
+author: "Sebastian Hoefer"
+date: today
+title-block-banner: "#161616"
+title-block-banner-color: "white"
+format:
+  html:
+    embed-resources: true
+    grid: 
+      body-width: 2000px
+      sidebar-width: 200px
+      margin-width: 300px
+    toc: true
+    toc-title: \deftocheading{toc}{}
+    toc-depth: 6
+    toc-location: right
+    toc-expand: 1
+    code-overflow: wrap
+    code-block-bg: "F2F2F2"
+    code-block-border-left: "#4A9D9E"
+    highlight-style: github
+    theme: darkly
+    knitr:
+      opts_chunk: 
+        warning: false
+        R.options:
+          width: 120
+standalone: true
+---
+
+# Load packages
+
+Load packages needed for data manipulation and analyses.
+
+```{r}
+#| message: false
+
+library(tidyverse)        # Data wrangling and visualization
+library(colorspace)       # Color manipulation
+library(cmdstanr)         # Interface to 'CmdStan'
+library(brms)             # Bayesian regression models
+library(rstan)            # Interface to Stan
+library(ggeffects)        # Marginal effects plots
+library(DHARMa)           # Residual diagnostics
+library(emmeans)          # Estimated marginal means
+library(tidybayes)        # Tidy data for Bayesian models
+library(HDInterval)       # HPD intervals
+library(ggsignif)         # Significance levels in ggplot
+library(vegan)            # Community ecology analysis
+library(pairwiseAdonis)   # Pairwise comparisons using adonis2
+library(ggbeeswarm)       # For raw data plotting
+library(patchwork)        # Combine ggplots
+library(iNEXT)            # Species accumulation curves
+library(scales)           # Manipulate axis labels
+library(report)           # Automated reporting
+```
+
+# Functions
+
+Custom ggplot theme for visualisation.
+
+```{r}
+my.theme <- function(){
+  theme_classic() +
+    theme(text = element_text(family = "Avenir Next"),
+          axis.title.y = element_text(margin = margin(t = 0,r = 20,b = 0,l = 0)),
+          axis.title.x = element_text(margin = margin(t = 20,r = 0,b = 0,l = 0)), 
+          plot.margin = unit(c(5, 10, 5, 10), units = "mm"),
+          strip.background = element_rect(fill = "#CCCCFF"),
+          strip.text.x = element_text(size = 20),
+          axis.title = element_text(size = 20),
+          axis.text = element_text(size = 18),
+          legend.text = element_text(size = 15),
+          legend.title = element_text(size = 15))
+}
+```
+
+# Load data
+
+## All frog data
+
+```{r}
+frog_data <- read.csv("frog_data.csv")
+```
+
+Function to summarise the total number of species per method for each plot across all sites. Adding missing zero values for methods that didn't capture any species at a given plot.
+
+```{r}
+summarise_frog_data <- function(df) {
+  
+  site_plots <- c("Tarcutta.DryA", "Tarcutta.DryB", "Tarcutta.WetA", "Tarcutta.WetB", 
+                  "Duval.DryA", "Duval.DryB", "Duval.WetA", "Duval.WetB", 
+                  "Mourachan.DryA", "Mourachan.DryB", "Mourachan.WetA", "Mourachan.WetB",
+                  "Wambiana.DryA", "Wambiana.DryB", "Wambiana.WetA", "Wambiana.WetB",
+                  "Undara.DryA", "Undara.DryB", "Undara.WetA", "Undara.WetB",
+                  "Rinyirru.DryA", "Rinyirru.DryB", "Rinyirru.WetA", "Rinyirru.WetB")
+
+  sites <- c("Tarcutta", "Duval", "Mourachan", "Wambiana", "Undara", "Rinyirru")
+  
+  methods <- c("PAM.all", "OBM", "PAM.survey")
+  
+  df <- df %>%
+    unite(site.plot, c(site, plot), sep = ".", remove = FALSE) %>%
+    select(-plot) %>%
+    group_by(site, site.plot, assessment.method) %>%
+    summarise(richness = length(unique(scientific.name))) %>%
+    ungroup() %>%
+    select(site, site.plot, assessment.method, richness) %>%
+    full_join(crossing(site.plot = unique(.$site.plot),
+                       assessment.method = unique(.$assessment.method)),
+              by = c("site.plot", "assessment.method")) %>%
+    replace_na(list(richness = 0)) %>%
+    mutate(site.plot = factor(site.plot, levels = site_plots),
+           site = str_extract(site.plot, "^[^.]*"),
+           site = factor(site, levels = sites),
+           assessment.method = factor(assessment.method, levels = methods),
+           richness = as.numeric(richness))
+
+  return(df)
+}
+```
+
+Run function.
+
+```{r}
+#| message: false
+
+frog_data_summary <- summarise_frog_data(frog_data)
+```
+
+## PAM data
+
+```{r}
+pam_data <- read_csv("frogs_PAM_daily_all.csv", show_col_types = FALSE) %>% 
+  filter(!MANUAL.ID %in% c("UNSURE", NA)) %>% 
+  mutate(MANUAL.ID = ifelse(MANUAL.ID == TRUE, 1, 0)) %>% 
+  group_by(template) %>%
+  filter(any(MANUAL.ID == 1)) %>% #Filter for templates with at least one true positive
+  ungroup()
+```
+
+# BirdNET Embeddings Performance Check
+
+## Recall calculations Embeddings
+
+This is a combined approach where if we have enough data for positive and negative detections for a template (>5 detections) we sample from the real distribution of the data (does not assume normality). If we have less than 5 detections for either positive or negative, we don't know the variance, so we make an educated guess based on the other frogs (we use "Parametric Simulation", borrowing the SD from the other templates, to simulate the variation we would expect to see if we had more detections). 
+
+```{r}
+#| warning: false
+
+# Function to return predictions over extended range
+run_model <- function(df) {
+  model_logistic <- glm(MANUAL.ID ~ eucledian.distance, 
+                       family = binomial(link = "logit"), 
+                       data = df)
+  
+  # Create extended x range
+  new_x <- data.frame(
+    eucledian.distance = seq(min(df$eucledian.distance), 
+                           max(df$eucledian.distance), 
+                           length.out = 100)
+  )
+  
+  # Get predictions and SE
+  preds <- predict(model_logistic, newdata = new_x, type = "link", se.fit = TRUE)
+  
+  # Add predictions to new_x
+  new_x$fit <- plogis(preds$fit)
+  new_x$lower <- plogis(preds$fit - 1.96 * preds$se.fit)
+  new_x$upper <- plogis(preds$fit + 1.96 * preds$se.fit)
+  
+  return(new_x)  # Return only the predictions dataframe
+}
+
+# Get the predictions
+model_predictions <- pam_data %>%
+  nest(data = -template) %>%               
+  mutate(preds = map(data, run_model)) %>%
+  select(-data) %>%                       
+  unnest(preds) 
+
+# Calculate the average SD from templates that have >1 detection
+global_pos_sd <- pam_data %>%
+  filter(MANUAL.ID == 1) %>%
+  group_by(template) %>%
+  summarise(
+    sd = sd(eucledian.distance), 
+    n = n()
+  ) %>%
+  filter(n > 1) %>%
+  summarise(avg_sd = mean(sd)) %>%
+  pull(avg_sd)
+
+calc_prob_hybrid <- function(pos, neg, global_sd, min_n = 5, n_sim = 10000) {
+  
+  if(length(pos) == 0 || length(neg) == 0) return(NA)
+  
+  set.seed(123)
+  
+  # --- HANDLE POSITIVES ---
+  if(length(pos) < min_n) {
+    # If fewer than 5 detections, use synthetic data.
+    # We use the specific mean (best guess for location)
+    # But the global SD (best guess for spread)
+    pos_draws <- abs(rnorm(n_sim, mean = mean(pos), sd = global_sd))
+  } else {
+    # STANDARD: If we have enough data, trust the specific data distribution
+    pos_draws <- sample(pos, n_sim, replace = TRUE)
+  }
+  
+  # --- HANDLE NEGATIVES ---
+  # Assuming negatives usually have plenty of data (background noise)
+  if(length(neg) < min_n) {
+     neg_global_sd <- sd(neg)
+     neg_draws <- abs(rnorm(n_sim, mean = mean(neg), sd = neg_global_sd))
+  } else {
+     neg_draws <- sample(neg, n_sim, replace = TRUE)
+  }
+  
+  # --- COMPARE ---
+  mean(pos_draws < neg_draws)
+}
+
+# Apply
+template_probabilities <- pam_data %>%
+  group_by(template) %>%
+  summarise(
+    probability = calc_prob_hybrid(
+      pos = eucledian.distance[MANUAL.ID == 1],
+      neg = eucledian.distance[MANUAL.ID == 0],
+      global_sd = global_pos_sd,
+      min_n = 5
+    )
+  )
+
+```
+
+## Visualisation
+
+```{r}
+#| fig-width: 27
+#| fig-asp: 0.6
+#| warning: false
+
+(combined_plot <- ggplot(pam_data, aes(x = eucledian.distance, y = MANUAL.ID)) +  
+  # Add CI ribbon
+  geom_ribbon(data = model_predictions,
+              aes(y = fit, ymin = lower, ymax = upper),
+              fill = "grey70",
+              alpha = 0.3) +
+  # Add CI boundary lines
+  geom_line(data = model_predictions,
+            aes(y = lower),
+            linetype = "dashed",
+            color = "black",
+            linewidth = 0.8) +
+  geom_line(data = model_predictions,
+            aes(y = upper),
+            linetype = "dashed",
+            color = "black",
+            linewidth = 0.8) +
+  # Add mean prediction line
+  geom_line(data = model_predictions,
+            aes(y = fit),
+            color = "black",
+            linewidth = 2) +
+  geom_rug(data = subset(pam_data, MANUAL.ID == 0),
+           aes(x = eucledian.distance),
+           color = "darkorchid", alpha = 0.3,
+           length = unit(0.05, "npc"),
+           linewidth = 0.8, 
+           sides = "b",
+           inherit.aes = FALSE) +
+  geom_rug(data = subset(pam_data, MANUAL.ID == 1),
+           aes(x = eucledian.distance),
+           color = "darkseagreen", alpha = 0.3,
+           length = unit(0.05, "npc"),
+           linewidth = 0.8, 
+           sides = "t",
+           inherit.aes = FALSE) +
+  geom_text(data = template_probabilities,
+            aes(x = Inf, y = Inf, label = sprintf("%.2f", probability)),
+            hjust = 1.3, vjust = 2, inherit.aes = FALSE) +
+  facet_wrap(~ template, scales = "free_x", ncol = 10) +
+  labs(x = "Euclidean Distance", 
+       y = "Probability of True Positive") +
+  scale_y_continuous(limits = c(-0.1, 1.1), breaks = seq(0, 1, 0.25)) +
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        strip.text = element_text(face = "bold"),
+        axis.title = element_text(size = 23, face = "bold"),
+        axis.title.x = element_text(margin = margin(t = 25, r = 0, b = 0, l = 0)),
+        axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
+        plot.margin = unit(c(5, 10, 5, 10), units = "mm")))
+```
+
+# OBM individually
+
+```{r}
+summarise_frog_data_methods <- function(df) {
+  
+  site_plots <- c("Tarcutta.DryA", "Tarcutta.DryB", "Tarcutta.WetA", "Tarcutta.WetB", 
+                  "Duval.DryA", "Duval.DryB", "Duval.WetA", "Duval.WetB", 
+                  "Mourachan.DryA", "Mourachan.DryB", "Mourachan.WetA", "Mourachan.WetB",
+                  "Wambiana.DryA", "Wambiana.DryB", "Wambiana.WetA", "Wambiana.WetB",
+                  "Undara.DryA", "Undara.DryB", "Undara.WetA", "Undara.WetB",
+                  "Rinyirru.DryA", "Rinyirru.DryB", "Rinyirru.WetA", "Rinyirru.WetB")
+
+  sites <- c("Tarcutta", "Duval", "Mourachan", "Wambiana", "Undara", "Rinyirru")
+  
+  methods <- c("funnel", "pitfall","spotlighting","incidentals","cover board","PAM.survey","PAM.all")
+  
+  df <- df %>%
+    unite(site.plot, c(site, plot), sep = ".", remove = FALSE) %>%
+    select(-plot) %>%
+    group_by(site, site.plot, survey.method) %>%
+    summarise(richness = length(unique(scientific.name))) %>%
+    ungroup() %>%
+    select(site, site.plot, survey.method, richness) %>%
+    full_join(crossing(site.plot = unique(.$site.plot),
+                       survey.method = unique(.$survey.method)),
+              by = c("site.plot", "survey.method")) %>%
+    replace_na(list(richness = 0)) %>%
+    mutate(site.plot = factor(site.plot, levels = site_plots),
+           site = str_extract(site.plot, "^[^.]*"),
+           site = factor(site, levels = sites),
+           survey.method = factor(survey.method, levels = methods),
+           richness = as.numeric(richness))
+
+  return(df)
+}
+```
+
+Run function.
+
+```{r}
+#| message: false
+
+frog_data_summary_methods <- summarise_frog_data_methods(frog_data)
+```
+
+```{r}
+#| fig-width: 12
+#| fig-asp: 0.8
+#| warning: false
+
+pal <- c("#D03C00","#F78303","black", "#0CC170", "#7671B4","#189F9F","#18709F")
+pal_dark <- after_scale(darken(pal, .1, space = "HLS"))
+
+(survey.methods.pointrange <- ggplot(frog_data_summary_methods, aes(survey.method, richness)) +
+   
+   # 1. Raw Data (Background)
+   # We keep the raw points faint so the viewer can still see the sample size/spread
+   geom_point(aes(fill = survey.method), 
+              color = "transparent",
+              position = position_jitter(width = 0.2, height = 0, seed = 123),
+              shape = 21, stroke = 0, size = 2.5, alpha = 0.25) +
+   
+   # 2. The Pointrange (Mean +/- Standard Error)
+   # We use stat_summary so we don't have to pre-calculate the means
+   stat_summary(
+     aes(color = survey.method, fill = after_scale(desaturate(lighten(color, .6), .4))),
+     fun.data = mean_cl_boot,       # Calculates 95% CI
+     geom = "pointrange",
+     size = 1,
+     linewidth = 1.2,
+     shape = 21,
+     stroke = 1.5
+   ) +
+   my.theme() +
+   scale_y_continuous(limits = c(0, 14), breaks = seq(0, 14, by = 2),
+                      name = "Total Species Richness") +
+   scale_x_discrete(name = "", labels = c("Funnel trap", "Pitfall trap", "Spotlighting", 
+                                          "Incidental","Arboreal Cover Board" ,"PAM (survey period)", "PAM (all audio)")) +
+   scale_fill_manual(values = pal, guide = "none") +
+   scale_colour_manual(values = pal_dark, name = "") +
+   theme(legend.position = "none",
+         axis.text.x = element_text(angle = 45, hjust = 1)))
+
+```
+
+# Financial investment
+
+```{r}
+costs_daily <- read_csv("expenses_daily.csv") %>% 
+  mutate(date = dmy(date)) %>% 
+  filter(method != "camera") %>% 
+  group_by(method) %>%
+  arrange(date) %>%
+  mutate(cumulative_cost = cumsum(cost),
+         method = factor(method, levels = c("OBM", "PAM"))) %>% 
+  ungroup() %>% 
+  drop_na(method)
+```
+```{r}
+#| fig-width: 14
+#| fig-asp: 0.6
+#| warning: false
+
+(costs <- ggplot(costs_daily, aes(date, cumulative_cost, col = method, group = method)) +
+  annotate("rect", xmin = as.Date("2021-04-16"), xmax = as.Date("2021-07-13"), ymin = -Inf, ymax = Inf, fill = "grey", alpha = 0.3) +
+  annotate("rect", xmin = as.Date("2021-09-26"), xmax = as.Date("2021-11-16"), ymin = -Inf, ymax = Inf, fill = "grey", alpha = 0.3) +
+  annotate("rect", xmin = as.Date("2022-04-26"), xmax = as.Date("2022-08-15"), ymin = -Inf, ymax = Inf, fill = "grey", alpha = 0.3) +
+  annotate("rect", xmin = as.Date("2022-09-26"), xmax = as.Date("2022-11-30"), ymin = -Inf, ymax = Inf, fill = "grey", alpha = 0.3) +
+  geom_line(size = 2) +
+  my.theme() +
+  scale_y_continuous(name = "Cost in AUD",
+                     limits = c(0, 245000),
+                     breaks = seq(0, 250000, by = 50000),
+                     labels = label_dollar(prefix = "$", big.mark = ",")) +
+  scale_x_date(name = "", date_breaks = "1 month", expand = c(0.002,0.02), date_labels = "%b %Y") +
+  scale_colour_manual(values=c("#FF8C00", "#189F9F"),
+                      name = "",
+                      label = c("OBM", "PAM")) +
+  theme(legend.position = c(y=0.05, x=0.9),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        panel.grid.major.y = element_line(colour = "black", size = 0.4, linetype = "dotted"),
+        axis.text.x = element_text(angle = 45, hjust = 1)))
+```
+
+# Species Richness
+
+## Bayesian Analysis
+
+### Priors
+
+Defining priors for Bayesian models.
+
+::: {.panel-tabset .nav-pills}
+
+#### Priors for the intercept
+
+```{r}
+frog_data_summary %>% summarise(median(log(richness)))
+frog_data_summary %>% summarise(mad(log(richness)))
+```
+
+Priors for the intercept are 1.6 and 1.
+
+#### Priors for the slope
+
+```{r}
+log(sd(frog_data_summary$richness))/apply(model.matrix(~assessment.method*site, data = frog_data_summary), 2, sd)
+```
+
+Priors for the slope are 5.
+:::
+
+### Fit model
+
+::: {.panel-tabset .nav-pills}
+
+#### Model 1
+
+```{r}
+priors1 <- prior(normal(1.6,1), class  = "Intercept") +
+  prior(normal(0,5), class = "b") +
+  prior(student_t(3,0,5), class = "sd")
+
+methods.form1 <- bf(richness ~ assessment.method + (1|site/site.plot),
+                 family = poisson(link = "log"))
+
+methods.brm1 <- brm(methods.form1,
+                  data = frog_data_summary,
+                  prior = priors1,
+                  sample_prior = "yes",
+                  backend = 'cmdstanr',
+                  threads = threading(2),
+                  chains = 4,
+                  cores = 4,
+                  iter = 2000,
+                  warmup = 1000,
+                  thin = 1,
+                  refresh = 0,
+                  seed = 3,
+                  save_pars = save_pars(all = TRUE),
+                  control = list(adapt_delta = 0.90, max_treedepth = 12))
+```
+
+##### Predictions
+
+```{r}
+methods.brm1 %>% ggpredict() %>% plot()
+```
+
+#### Model 2
+
+```{r}
+priors2 <- prior(normal(1.6,1), class  = "Intercept") +
+  prior(normal(0,5), class = "b") +
+  prior(student_t(3,0,5), class = "sd")
+
+methods.form2 <- bf(richness ~ assessment.method + (1|site/site.plot),
+                 family="negbinomial2")
+
+methods.brm2 <- brm(methods.form2,
+                  data = frog_data_summary,
+                  prior = priors2,
+                  sample_prior = "yes",
+                  backend = 'cmdstanr',
+                  threads = threading(2),
+                  chains = 4,
+                  cores = 4,
+                  iter = 2000,
+                  warmup = 1000,
+                  thin = 1,
+                  refresh = 0,
+                  seed = 3,
+                  save_pars = save_pars(all = TRUE),
+                  control = list(adapt_delta = 0.95, max_treedepth = 12))
+```
+
+##### Predictions
+
+```{r}
+methods.brm2 %>% ggpredict() %>% plot()
+```
+
+:::
+
+### Compare Models
+
+::: {.panel-tabset .nav-pills}
+
+##### Loo Model 1
+
+```{r}
+(l.1 <- methods.brm1 %>% loo())
+```
+
+##### Loo Model 2
+```{r}
+(l.2 <- methods.brm2 %>% loo())
+```
+
+##### Loo Comparison
+```{r}
+loo_compare(loo(methods.brm1), loo(methods.brm2))
+```
+
+Model `methods.brm1` was selected as best model based on loo estimates.
+
+:::
+
+### Diagnostics
+
+::: {.panel-tabset .nav-pills}
+
+##### Trace plots
+
+```{r}
+methods.brm1$fit %>% stan_trace()
+```
+
+##### Autocorrelation plots
+
+```{r}
+methods.brm1$fit %>% stan_ac()
+```
+
+##### Rhat statistic
+
+```{r}
+methods.brm1$fit %>% stan_rhat()
+```
+
+##### Effective sampling size
+
+```{r}
+methods.brm1$fit %>% stan_ess()
+```
+
+##### Posterior predictive check plot
+
+```{r}
+methods.brm1 %>% pp_check(type = "dens_overlay", ndraws = 200)
+```
+
+##### DHARMa residuals
+
+```{r}
+set.seed(8)
+preds <- posterior_predict(methods.brm1, ndraws=250, summary=FALSE)
+method.resids <- createDHARMa(simulatedResponse = t(preds),
+                            observedResponse = frog_data_summary$richness,
+                            fittedPredictedResponse = apply(preds, 2, median),
+                            integerResponse = TRUE)
+method.resids %>% plot()
+```
+
+##### Dispersion test
+
+```{r}
+method.resids %>% testDispersion()
+```
+
+##### Zero-inflation test
+
+```{r}
+method.resids %>% testZeroInflation()
+```
+
+:::
+
+### Investigation
+
+```{r}
+summary(methods.brm1)
+```
+
+#### Methods pairwise comparison across sites
+
+```{r}
+(diff.methods.avg <- methods.brm1 %>%
+  emmeans(~assessment.method) %>%
+  regrid(transform = "none") %>%
+  pairs() %>% 
+  gather_emmeans_draws() %>% 
+  mutate(f.change = exp(.value)) %>% 
+  summarise("Average fractional change" = median(f.change),
+            "Lower HDI" = HDInterval::hdi(f.change)[1],
+            "Upper HDI" = HDInterval::hdi(f.change)[2],
+            "Probability of difference" = sum(.value > 0)/n())) #to see if there is any change
+```
+
+### Visualisation
+
+```{r}
+#| fig-width: 12
+#| fig-asp: 0.6
+
+pal <- c("#189F9F","#FF8C00", "#18709F", "#A034F0")
+pal_dark <- after_scale(darken(pal, .1, space = "HLS"))
+
+(methods.pointrange <- ggplot(frog_data_summary, aes(assessment.method, richness)) +
+   geom_point(aes(fill = assessment.method), 
+              color = "transparent",
+              position = position_jitter(width = 0.2, height = 0, seed = 123),
+              shape = 21, stroke = 0, size = 3, alpha = 0.25) +
+   stat_summary(
+     aes(color = assessment.method, fill = after_scale(desaturate(lighten(color, .6), .4))),
+     fun.data = mean_cl_boot,
+     geom = "pointrange",
+     size = 1.2,             
+     linewidth = 1.2,        
+     shape = 21,             
+     stroke = 1.5            
+   ) +
+   geom_signif(comparisons = list(c("PAM.all", "OBM"),
+                                  c("PAM.all", "PAM.survey"),
+                                  c("OBM", "PAM.survey")),
+               annotations = c("1.65, HDI 95% [1.33,2.05]",
+                               "2.8, HDI 95% [2.12,3.58]",
+                               "1.7, HDI 95% [1.26,2.20]"),
+               y_position = c(14, 16, 11),
+               textsize = 6, vjust = -0.2) +
+   my.theme() +
+   scale_y_continuous(limits = c(0, 18), breaks = seq(0, 18, by = 2),
+                      name = "Total Species Richness") +
+   scale_x_discrete(name = "", 
+                    labels = c("PAM (all audio)", "OBM", "PAM (survey period)")) +
+   scale_fill_manual(values = pal, guide = "none") +
+   scale_colour_manual(values = pal_dark, guide = "none") +
+   theme(legend.position = "none"))
+```
+
+# Community Composition
+
+## Prepare data
+
+```{r}
+frog_community3 <- frog_data %>% 
+  filter(!recapture %in% c("y")) %>%  
+  select(site, plot, assessment.method,scientific.name) %>% #selected relevant grouping variables
+  group_by(across(everything())) %>% #groups by all available columns
+  mutate(number = n()) %>% #created a numbers column that counts the number of duplicate observations
+  ungroup() %>% 
+  unique() %>% #merged the duplicate rows
+  pivot_wider(names_from = "scientific.name", #transformed dataset from long to wide format
+              values_from = "number",
+              values_fill = list(number=0)) %>% #replaced NAs with 0
+  arrange(site) %>% 
+  mutate(assessment.method = factor(assessment.method))
+```
+
+In preparation for community analyses, only keep columns and rows with values above 0.
+
+```{r}
+all <- frog_community3 %>% select(where(~ any(. != 0))) %>% filter(rowSums(.[,4:ncol(.)]) > 0)
+```
+
+Transformation of the data to binary (presence/absence) for Jaccard dissimilarity.
+
+```{r}
+all_jacc <- all %>%
+  select(where(is.numeric)) %>% # Removed columns with non-numerical values
+  decostand(method="pa", MARGIN = 1) %>% # Standardised presence/absence (method = "pa") by rows (MARGIN = 1)
+  cbind(all[,1:3]) %>% 
+  select(site, plot, assessment.method, everything())
+```
+
+## NMDS Ordination
+
+### Jaccard dissimilarity
+
+```{r}
+set.seed(3)
+all_nmds_jacc <-  metaMDS(all_jacc[4:ncol(all_jacc)], distance="jaccard", k=2,trymax=1000, autotransform = FALSE)
+```
+
+## Visualisation
+
+### Jaccard dissimilarity
+
+```{r}
+#| fig-width: 14
+#| fig-asp: 0.6
+
+# 1. Extract NMDS Scores from your specific object (all_nmds_jacc)
+# We pull the metadata columns (site, plot, assessment.method) from 'all_jacc'
+scores_df <- as.data.frame(scores(all_nmds_jacc, display = "sites")) %>%
+  bind_cols(all_jacc[, 1:3]) %>%  # Bind the first 3 cols: site, plot, method
+  mutate(assessment.method = factor(assessment.method, 
+                                    levels = c("PAM.all", "OBM", "PAM.survey")),
+         site = factor(site, 
+                                    levels = c("Rinyirru", "Undara", "Wambiana", "Mourachan", "Duval", "Tarcutta")))
+
+# 2. Calculate Centroids (Means for each method)
+centroids <- scores_df %>%
+  group_by(assessment.method) %>%
+  summarise(NMDS1 = mean(NMDS1), NMDS2 = mean(NMDS2), .groups = "drop")
+
+# 3. Create the Plot
+pal <- c("#189F9F","#FF8C00", "#18709F")
+pal_dark_values <- darken(pal, 0.1, space = "HLS")
+pal_light_fill <- desaturate(lighten(pal_dark_values, .6), .4)
+
+(gg_nmds_ellipses_plot <- ggplot(scores_df, aes(x = NMDS1, y = NMDS2, color = assessment.method)) +
+   stat_ellipse(aes(fill = assessment.method), 
+                geom = "polygon", 
+                level = 0.95, 
+                alpha = 0.1,
+                linetype = "dashed",
+                show.legend = FALSE) +
+   geom_point(size = 2, alpha = 0.4, shape = 16, show.legend = FALSE) +
+   geom_point(data = centroids,
+              aes(color = assessment.method,
+                  fill = after_scale(desaturate(lighten(color, .6), .4))),
+              size = 6, shape = 21, stroke = 1) +
+    annotate("text", x = Inf, y = Inf, 
+            label = paste("Stress:", round(all_nmds_jacc$stress, 3)), 
+            hjust = 1.2, vjust = 2, size = 5, fontface = "italic") +
+   scale_color_manual(values = pal_dark_values,
+                      name = "",
+                      labels = c("PAM (all audio)", "OBM", "PAM (survey period)")) +
+   scale_fill_manual(values = pal,
+                     guide = "none") +
+    guides(color = guide_legend(override.aes = list(
+     shape = 21,              # Force Circle
+     size = 6,                # Match Centroid Size
+     fill = pal_light_fill,   # Use the PRE-CALCULATED light colors
+     color = pal_dark_values, # Use the dark borders
+     stroke = 1,
+     alpha = 1                # Make sure it's visible (override the alpha=0 from dummy layer)
+   ))) +
+   my.theme() +
+   theme(
+     panel.grid = element_blank(),
+     legend.position = "bottom",
+     legend.text = element_text(size = 16),
+     axis.title = element_text(face = "bold", size = 12)
+   ))
+```
+
+### Investigation
+
+#### Adonis
+
+```{r}
+#| warning: false
+
+#Permutation test: significant difference between assessment methods for frog communities.
+all.dist2 <- vegdist(all_jacc[4:ncol(all_jacc)], 'jaccard')
+(all.adonis <- adonis2(all.dist2 ~ assessment.method, data=all_jacc, strata = all_jacc$site))
+
+#Let's see how each method compares within site
+set.seed(9)
+raw_results <- pairwise.adonis2(all.dist2 ~ assessment.method, 
+                                data = all_jacc,
+                                strata = "site")
+
+(results_df <- data.frame(
+  pair = names(raw_results)[-1],
+  F_stat = sapply(raw_results[-1], function(x) x$F[1]),
+  R2     = sapply(raw_results[-1], function(x) x$R2[1]),
+  p_raw  = sapply(raw_results[-1], function(x) x$`Pr(>F)`[1])
+) %>%
+  mutate(p_adjusted = p.adjust(p_raw, method = "holm")))
+
+```
+
+#### Magnitude of differences
+
+```{r}
+# Create Community Matrix (Wide Format)
+frog_comm_plot <- frog_data %>% 
+  filter(!recapture %in% c("y")) %>% 
+  select(site, plot, assessment.method, scientific.name) %>%
+  group_by(site, plot, assessment.method, scientific.name) %>%
+  summarise(present = 1, .groups = "drop") %>% 
+  pivot_wider(names_from = scientific.name,
+              values_from = present,
+              values_fill = 0) %>%
+  select(where(~any(. != 0))) %>% 
+  filter(rowSums(select(., where(is.numeric))) > 0)
+
+# Separate Metadata for joining later
+frog_meta <- frog_comm_plot %>%
+  select(site, plot, assessment.method) %>%
+  mutate(row_id = as.character(row_number())) # ID for re-joining
+
+```
+
+```{r}
+# Calculate Distance Matrix
+dist_matrix <- frog_comm_plot %>%
+  select(where(is.numeric)) %>%
+  vegdist(method = "jaccard")
+
+# Convert to Long Format
+dist_long <- dist_matrix %>%
+  as.matrix() %>%
+  as_tibble(rownames = "sample1") %>%
+  pivot_longer(-sample1, names_to = "sample2", values_to = "distance") %>%
+  filter(sample1 < sample2) # Keep upper triangle only (no duplicates)
+
+# Join Metadata & Define Comparison Types
+dist_categorized <- dist_long %>%
+  # Join metadata for Sample 1
+  left_join(frog_meta, by = c("sample1" = "row_id")) %>%
+  # Join metadata for Sample 2 (with suffixes)
+  left_join(frog_meta, by = c("sample2" = "row_id"), 
+            suffix = c("_1", "_2")) %>%
+  
+  # Logic to define what we are comparing
+  mutate(
+    comparison_type = case_when(
+      # 1. METHOD EFFECT: Same Site, Same Plot, Different Method
+      # (How much does changing the method change the result?)
+      site_1 == site_2 & plot_1 == plot_2 & assessment.method_1 != assessment.method_2 ~ "Method Effect",
+      
+      # 2. PLOT TURNOVER: Same Site, Different Plot, Same Method
+      # (How much does moving 500m change the result?)
+      site_1 == site_2 & plot_1 != plot_2 & assessment.method_1 == assessment.method_2 ~ "Plot Turnover\n(Within Site)",
+      
+      # 3. SITE TURNOVER: Different Site, Same Method
+      # (How much does moving 100km change the result?)
+      site_1 != site_2 & assessment.method_1 == assessment.method_2 ~ "Site Turnover\n(Between Sites)"),
+    site_1 = fct_relevel(site_1, "Rinyirru", "Undara", "Wambiana", "Mourachan", "Duval", "Tarcutta")) %>%
+  # Remove comparisons we don't care about (e.g. Diff Site AND Diff Method)
+  drop_na(comparison_type)
+
+```
+
+##### Visualisation
+
+```{r}
+#| fig-width: 10
+#| fig-asp: 0.6
+
+(jacc_plot_overall <- ggplot(dist_categorized, aes(x = comparison_type, y = distance)) +
+   ggbeeswarm::geom_quasirandom(aes(color = comparison_type),
+                    size = 1.3,
+                    width = .2,
+                    alpha = .3,
+                    show.legend = FALSE) +
+   stat_summary(fun.data = mean_cl_normal,
+                geom = "pointrange",
+                color = "black",
+                size = 1.1,
+                linewidth = 1.1) +
+   scale_color_manual(values = c("grey40", "grey40", "grey40")) + # Highlight Method Effect in Red
+   scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+   my.theme() +
+   theme(
+     panel.border = element_rect(fill = NA, color = "black", linewidth = 1.5)
+   ) +
+   labs(x = "",
+        y = "Jaccard Dissimilarity"))
+
+```
+
+```{r}
+#| fig-width: 10
+#| fig-asp: 0.6
+
+(jacc_plot_methods_by_site <- dist_categorized %>%
+   filter(comparison_type == "Method Effect") %>%
+   ggplot(aes(x = site_1, y = distance)) +
+   ggbeeswarm::geom_quasirandom(color = "grey40",
+                    size = 1.3,
+                    width = .2,
+                    alpha = .5) +
+   stat_summary(fun.data = mean_cl_normal,
+                geom = "pointrange",
+                color = "black",
+                size = 1.1,
+                linewidth = 1.1) +
+   scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+   my.theme() +
+   theme(
+     panel.border = element_rect(fill = NA, color = "black", linewidth = 1.5),
+     axis.text.x = element_text(angle = 45, hjust = 1)
+   ) +
+   labs(x = "",
+        y = "Jaccard Dissimilarity"))
+```
+
+```{r}
+#| fig-width: 14
+#| fig-asp: 1.2
+
+gg_nmds_ellipses_plot / jacc_plot_overall + jacc_plot_methods_by_site +
+  plot_annotation(tag_levels = "A", tag_suffix = ")") &
+  theme(plot.tag = element_text(size = 35, face = "bold"),
+        plot.margin = unit(c(5, 10, 0, 15), units = "mm"),
+        plot.tag.position = c(-0.05, 1))
+```
+
+Split the NMDS plot into individual sites.
+
+```{r}
+#| fig-width: 14
+#| fig-asp: 0.6
+
+# 2. Calculate Centroids PER SITE and PER METHOD
+site_method_centroids <- scores_df %>%
+  group_by(site, assessment.method) %>%
+  summarise(NMDS1 = mean(NMDS1), NMDS2 = mean(NMDS2), .groups = "drop")
+
+# Calculate mean Method Effect dissimilarity per site
+site_jacc_labels <- dist_categorized %>%
+  filter(comparison_type == "Method Effect") %>%
+  group_by(site = site_1) %>%
+  summarise(
+    mean_dist = round(mean(distance), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label_text = paste0("Mean Dissim: ", mean_dist)
+  )
+
+
+# 3. Create the Faceted Plot
+(gg_nmds_ellipses_plot_sites <- ggplot(scores_df, aes(x = NMDS1, y = NMDS2, color = assessment.method)) +
+   stat_ellipse(aes(fill = assessment.method), 
+                geom = "polygon", 
+                level = 0.95, 
+                alpha = 0.1,
+                linetype = "dashed",
+                show.legend = FALSE) +
+   geom_point(size = 2, alpha = 0.4, shape = 16, show.legend = FALSE) +
+   geom_point(data = site_method_centroids,
+              aes(color = assessment.method,
+                  fill = after_scale(desaturate(lighten(color, .6), .4))),
+              size = 6, shape = 21, stroke = 1) +
+   facet_wrap(~site, scales = "free") +
+   geom_text(data = site_jacc_labels,
+             aes(label = label_text),
+             x = Inf, y = Inf,
+             hjust = 1.1, vjust = 1.5,
+             color = "black",    
+             size = 3.5, fontface = "italic",
+             inherit.aes = FALSE) +
+   scale_color_manual(values = pal_dark_values,
+                      name = "",
+                      labels = c("PAM (all audio)", "OBM", "PAM (survey period)")) +
+   scale_fill_manual(values = pal,
+                     guide = "none") +
+    labs(subtitle = paste("Global NMDS Stress:", round(all_nmds_jacc$stress, 3))) +
+    guides(color = guide_legend(override.aes = list(
+     shape = 21,              # Force Circle
+     size = 6,                # Match Centroid Size
+     fill = pal_light_fill,   # Use the PRE-CALCULATED light colors
+     color = pal_dark_values, # Use the dark borders
+     stroke = 1,
+     alpha = 1                # Make sure it's visible (override the alpha=0 from dummy layer)
+   ))) +
+   my.theme() +
+   theme(
+    panel.border = element_rect(fill = NA, color = "black", linewidth = 1.5),
+    strip.text.x = element_text(size = 14, face = "bold", hjust = 0),
+    strip.background = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_text(face = "italic", size = 13)))
+```
+
+# Survey Effort
+
+## Species accumulation curves
+
+### Prepare data
+
+Merged duplicate rows for duplicate observations and transformed the dataset to a wide format.
+
+```{r}
+frog_community <- frog_data %>% 
+  select(site, SamplingDay, assessment.method,scientific.name) %>% #selected relevant grouping variables
+  group_by(across(everything())) %>% #groups by all available columns
+  mutate(number = n()) %>% #created a numbers column that counts the number of duplicate observations
+  ungroup() %>% 
+  unique() %>% #merged the duplicate rows
+  pivot_wider(names_from = "scientific.name", #transformed dataset from long to wide format
+              values_from = "number",
+              values_fill = list(number=0)) %>% #replaced NAs with 0
+  arrange(site) %>% 
+  filter(!assessment.method %in% c("PAM.all", "camera")) %>% 
+  mutate(SamplingDay = as.factor(SamplingDay))
+
+frog_community2 <- frog_community %>%
+    group_by(site, SamplingDay) %>%
+    summarise(
+        assessment.method = "total",
+        across(where(is.numeric), sum),
+        .groups = "drop"
+    ) %>%
+    bind_rows(frog_community, .)
+```
+
+```{r}
+# Prepare Incidence Data (Days as Effort)
+incidence_data <- frog_community2 %>%
+  unite("Group_ID", site, assessment.method, sep = "__", remove = FALSE) %>%
+  group_by(Group_ID, site, assessment.method) %>%
+  mutate(across(where(is.numeric) & !c(SamplingDay), ~ ifelse(. > 0, 1, 0))) %>%
+  summarise(
+    T_days = case_when(
+      unique(site) %in% c("Duval", "Mourachan") ~ 21,
+      unique(site) %in% c("Rinyirru", "Undara", "Wambiana", "Tarcutta") ~ 28,
+      TRUE ~ as.numeric(n_distinct(SamplingDay))
+    ),
+    across(where(is.numeric) & !c(SamplingDay), sum),
+    .groups = "drop"
+  )
+
+# Create iNEXT Input List
+list_data <- split(incidence_data, incidence_data$Group_ID)
+
+clean_vector <- function(x) {
+  # Extract numeric columns
+  vec <- x %>% select(where(is.numeric)) %>% unlist() %>% as.numeric()
+  
+  # vec[1] is T_days. The rest are species counts.
+  t_val <- vec[1]
+  species_freqs <- vec[-1]
+  
+  # Return: c(T_days, count1, count2...) keeping only non-zero species
+  return(c(t_val, species_freqs[species_freqs > 0]))
+}
+
+iNEXT_input <- lapply(list_data, clean_vector)
+```
+
+### Run Analysis
+
+```{r}
+#| warning: false
+
+# q=0 is Richness. incidence_freq ensures X-axis is Days.
+# endpoint = 90 ensures the extrapolation lines all go out to 90 days
+out <- iNEXT(iNEXT_input, q = 0, datatype = "incidence_freq", endpoint = 60, knots = 60)
+
+# Extract Data Frame for Custom Plotting
+ggi <- out$iNextEst$size_based %>%
+  as_tibble() %>%
+  filter(Order.q == 0) %>%
+  rename(x = t, y = qD, y.lwr = qD.LCL, y.upr = qD.UCL) %>%
+  separate(Assemblage, into = c("site", "assessment.method"), sep = "__") %>%
+  mutate(
+    site = factor(site, levels = c("Rinyirru","Undara","Wambiana","Mourachan","Duval","Tarcutta")),
+    assessment.method = factor(assessment.method, levels = c("PAM.survey", "OBM", "total")),
+    Method = ifelse(Method == "Observed", "Rarefaction", Method),
+    Method = factor(Method, levels = c("Rarefaction", "Extrapolation"))
+  )
+
+# Separate "Total" from "Other Methods"
+df_total <- ggi %>% filter(assessment.method == "total")
+df_others <- ggi %>% filter(assessment.method != "total")
+
+# Apply Constraint using Interpolation
+# We calculate the specific 'Total' limit for every 'x' value in the sub-methods
+df_others_constrained <- df_others %>%
+  group_by(site) %>%
+  mutate(
+    # Interpolate the 'y' (Richness) limit
+    limit_y = approx(x = df_total$x[df_total$site == unique(site)], 
+                     y = df_total$y[df_total$site == unique(site)], 
+                     xout = x, rule = 2)$y,
+    
+    # Interpolate the 'y.upr' (Confidence Interval) limit
+    limit_upr = approx(x = df_total$x[df_total$site == unique(site)], 
+                       y = df_total$y.upr[df_total$site == unique(site)], 
+                       xout = x, rule = 2)$y,
+    
+    # Clamp the values: Take the minimum of the Method vs the Interpolated Total
+    y = pmin(y, limit_y, na.rm = TRUE),
+    y.upr = pmin(y.upr, limit_upr, na.rm = TRUE)
+  ) %>%
+  select(-limit_y, -limit_upr) # Clean up helper columns
+
+# Recombine
+ggi_final <- bind_rows(df_total, df_others_constrained) 
+```
+
+### Visualisation
+
+```{r}
+#| fig-width: 14
+#| fig-asp: 0.6
+
+
+(rare.inext <- ggplot(ggi, aes(x = x, y = y, colour = assessment.method)) +
+  geom_ribbon(aes(ymin = y.lwr, ymax = y.upr, fill = assessment.method),
+              alpha = 0.15, colour = NA) +
+  geom_line(aes(linetype = Method), linewidth = 1) +
+  geom_vline(xintercept = c(7, 14, 21, 28), linetype = "dotted", 
+             colour = "black", linewidth = 0.3) +
+  facet_wrap(~ site, scales = "free_y") +
+  scale_x_continuous(name = "Survey effort (days)", 
+                     breaks = seq(0, 60, 7), 
+                     limits = c(0, 60)) +
+  scale_y_continuous(name = "Species Richness", breaks = scales::breaks_pretty(n=4)) +
+  scale_colour_manual(
+    name = "",
+    values = c("PAM.survey" = "#18709F",
+               "OBM"        = "#FF8C00",
+               "total"      = "black"),
+    labels = c("PAM (survey period)",
+               "OBM",
+               "Total Richness")
+  ) +
+  scale_fill_manual(
+    guide = "none",
+    values = c("PAM.survey" = "#18709F",
+               "OBM"        = "#FF8C00",
+               "total"      = "black") 
+  ) +
+  scale_linetype_manual(values = c(Rarefaction = "solid", Extrapolation = "22"),
+                        guide = guide_legend(title = NULL)) +
+  my.theme() +
+  theme(
+    panel.border = element_rect(fill = NA, color = "black", linewidth = 1.5),
+    strip.text.x = element_text(size = 15, face = "bold", hjust = 0),
+    strip.background = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_text(face = "italic", size = 14)
+  ) +
+  guides(colour = guide_legend(order = 1),
+         linetype = guide_legend(order = 2)))
+```
+
+## PAM survey length
+
+How many days until PAM.all reaches values similar to OBM for frog species richness. In other words how long should we leave recorders out on average until we get the most adequate number of species.
+
+```{r}
+all_frogs <- frog_data %>% 
+  filter(assessment.method == "PAM.all") %>% 
+  select(site, SamplingDay, assessment.method,scientific.name) %>% #selected relevant grouping variables
+  group_by(across(everything())) %>% #groups by all available columns
+  mutate(number = n()) %>% #created a numbers column that counts the number of duplicate observations
+  ungroup() %>% 
+  unique() %>% #merged the duplicate rows
+  pivot_wider(names_from = "scientific.name", #transformed dataset from long to wide format
+              values_from = "number",
+              values_fill = list(number=0)) %>% #replaced NAs with 0
+  arrange(site) %>%
+  mutate(SamplingDay = as.factor(SamplingDay))
+```
+
+```{r}
+#| warning: false
+
+# Prepare Incidence Data
+incidence_data_all <- all_frogs %>%
+  group_by(site) %>%
+  mutate(across(where(is.numeric) & !c(SamplingDay), ~ ifelse(. > 0, 1, 0))) %>%
+  summarise(
+    T_days = case_when(
+      unique(site) == "Tarcutta" ~ 986,
+      unique(site) == "Duval" ~ 679,
+      unique(site) == "Mourachan" ~ 783,
+      unique(site) == "Wambiana" ~ 1235,
+      unique(site) == "Undara" ~ 780,
+      unique(site) == "Rinyirru" ~ 488,
+      TRUE ~ n_distinct(SamplingDay)
+    ),
+    across(where(is.numeric) & !c(SamplingDay), sum),
+    .groups = "drop"
+  )
+
+# Create Clean Vectors ---
+list_data <- split(incidence_data_all, incidence_data_all$site)
+
+clean_vector <- function(x) {
+  vec <- x %>% select(where(is.numeric)) %>% unlist() %>% as.numeric()
+  return(c(vec[1], vec[-1][vec[-1] > 0])) # T_days, followed by species counts
+}
+
+iNEXT_input_list <- lapply(list_data, clean_vector)
+
+# Run iNEXT for Each Site Individually
+
+# Define Max Days for lookup
+site_vals <- c(Tarcutta=986, Duval=679, Mourachan=783, Wambiana=1235, Undara=780, Rinyirru=488)
+
+# Function to run iNEXT for one site
+run_inext_single <- function(site_name, data_vec) {
+  
+  # Get the max days for this specific site
+  max_d <- site_vals[[site_name]]
+  
+  # Create the specific sequence of days (1, 2, 3 ... Max)
+  day_seq <- seq(1, max_d, by = 1)
+  
+  # Run iNEXT. Note: We pass the data as a list to keep format consistent
+  # size = day_seq forces calculation for every single day
+  res <- iNEXT(list(data_vec), q = 0, datatype = "incidence_freq", size = day_seq)
+  
+  # Extract the dataframe immediately
+  df <- res$iNextEst$size_based %>%
+    as_tibble() %>%
+    filter(Order.q == 0) %>%
+    mutate(site = site_name) # Add site name back in
+    
+  return(df)
+}
+
+# Apply the function to all sites and combine results
+# map2_dfr iterates over the Names and the Data simultaneously
+all_frogs.result <- map2_dfr(names(iNEXT_input_list), iNEXT_input_list, run_inext_single) %>%
+  rename(day = t, richness = qD, lower.ci = qD.LCL, upper.ci = qD.UCL) %>%
+  mutate(site = factor(site, levels = c("Rinyirru", "Undara", "Wambiana", "Mourachan", "Duval", "Tarcutta")))
+
+obm.max <- ggi_final %>% 
+  filter(assessment.method == "OBM",
+         Method == "Rarefaction") %>% 
+  group_by(site) %>% 
+  slice_max(order_by = x, n = 1) %>% 
+  ungroup() %>% 
+  select(site, richness.max = y)
+
+# Find Days to Reach OBM
+days_to_reach <- all_frogs.result %>%
+  left_join(obm.max, by = "site") %>%
+  group_by(site) %>%
+  filter(round(richness, digits = 2) >= richness.max) %>%
+  slice(1) %>%
+  select(site, days_required = day, pam_richness = richness, obm_target = richness.max)
+```
+
+```{r}
+pam.max <- all_frogs.result %>% 
+  group_by(site) %>% 
+  slice_max(order_by = day, n = 1) %>% 
+  ungroup() %>% 
+  select(site, richness.max = richness)
+
+days.pam.max <- all_frogs.result %>% 
+  mutate(richness = round(richness, digits = 1)) %>% 
+  group_by(site) %>% 
+  slice_max(order_by = richness, n = 1, with_ties = FALSE) %>% 
+  ungroup() %>% 
+  select(site, richness.max = richness, day)
+
+pam.28 <- all_frogs.result %>% 
+  filter(day == 28) %>% 
+  select(site, richness.28 = richness) %>% 
+  left_join(pam.max, by = "site") %>% 
+  mutate(prop.28 = round(richness.28 / richness.max, digits = 2))
+
+pam.90 <- all_frogs.result %>% 
+  filter(day == 90) %>% 
+  select(site, richness.90 = richness) %>% 
+  left_join(pam.max, by = "site") %>% 
+  mutate(prop.90 = round(richness.90 / richness.max, digits = 2))
+
+pam.180 <- all_frogs.result %>% 
+  filter(day == 180) %>% 
+  select(site, richness.180 = richness) %>% 
+  left_join(pam.max, by = "site") %>% 
+  mutate(prop.180 = round(richness.180 / richness.max, digits = 2))
+
+pam.365 <- all_frogs.result %>% 
+  filter(day == 365) %>% 
+  select(site, richness.365 = richness) %>% 
+  left_join(pam.max, by = "site") %>% 
+  mutate(prop.365 = round(richness.365 / richness.max, digits = 2))
+
+pam.rich.prop <- list(pam.max, pam.28, pam.90, pam.180, pam.365, days.pam.max) %>% 
+  reduce(left_join, by = c("site", "richness.max")) %>% 
+  mutate(site = factor(site, levels = c("Rinyirru", "Undara", "Wambiana", "Mourachan",
+                                        "Duval", "Tarcutta")))
+
+sampling.table <- pam.rich.prop %>% 
+  select(Site = site, "PAM (total richness)" = richness.max, "Days to max richness" = day,
+         "PAM (proportion 28 days)" = prop.28,
+         "PAM (proportion 90 days)" = prop.90,
+         "PAM (proportion 180 days)" = prop.180,
+         "PAM (proportion 365 days)" = prop.365) %>% 
+  add_row(Site = "Average", "PAM (total richness)" = round(mean(pam.rich.prop$richness.max)),
+          "Days to max richness" = round(mean(pam.rich.prop$day)),
+          "PAM (proportion 28 days)" = round(mean(pam.rich.prop$prop.28), digits = 2),
+          "PAM (proportion 90 days)" = round(mean(pam.rich.prop$prop.90), digits = 2),
+          "PAM (proportion 180 days)" = round(mean(pam.rich.prop$prop.180), digits = 2),
+          "PAM (proportion 365 days)" = round(mean(pam.rich.prop$prop.365), digits = 2))
+```
+
+## Seasonal sampling variation
+
+This data set has seasons defined as data within calendar seasons across all years.
+
+Dec-Mar = Summer
+Mar-Jun = Autumn
+Jun-Sep = Winter
+Sep-Dec = Spring
+
+```{r}
+frog_data_season <- read_csv("frog_data_season.csv")
+```
+
+```{r}
+frog_community_season <- frog_data_season %>% 
+  select(site, SamplingDay, season,scientific.name) %>% #selected relevant grouping variables
+  group_by(across(everything())) %>% #groups by all available columns
+  mutate(number = n()) %>% #created a numbers column that counts the number of duplicate observations
+  ungroup() %>% 
+  unique() %>% #merged the duplicate rows
+  pivot_wider(names_from = "scientific.name", #transformed dataset from long to wide format
+              values_from = "number",
+              values_fill = list(number=0)) %>% #replaced NAs with 0
+  arrange(site) %>% 
+  mutate(SamplingDay = as.factor(SamplingDay))
+
+frog_community_season2 <- frog_community_season %>%
+    group_by(site, SamplingDay) %>%
+    summarise(
+        season = "total",
+        across(where(is.numeric), sum),
+        .groups = "drop"
+    ) %>%
+    bind_rows(frog_community_season, .)
+
+```
+
+```{r}
+# A. Define the Seasonal Limits
+seasonal_limits <- tribble(
+  ~site,       ~season,   ~max_days,
+  "Duval",     "winter",  147,
+  "Mourachan", "winter",  184,
+  "Rinyirru",  "winter",  110,
+  "Tarcutta",  "winter",  276,
+  "Undara",    "winter",  250,
+  "Wambiana",  "winter",  276,
+  
+  "Duval",     "spring",  168,
+  "Mourachan", "spring",  214,
+  "Rinyirru",  "spring",  119,
+  "Tarcutta",  "spring",  271,
+  "Undara",    "spring",  227,
+  "Wambiana",  "spring",  277,
+  
+  "Duval",     "summer",  180,
+  "Mourachan", "summer",  200,
+  "Rinyirru",  "summer",  147,
+  "Tarcutta",  "summer",  177,
+  "Undara",    "summer",  122,
+  "Wambiana",  "summer",  361,
+  
+  "Duval",     "autumn",  184,
+  "Mourachan", "autumn",  183,
+  "Rinyirru",  "autumn",  92,
+  "Tarcutta",  "autumn",  256,
+  "Undara",    "autumn",  134,
+  "Wambiana",  "autumn",  320
+)
+
+
+# B. Calculate "Total" Limits (Sum of all seasons per site)
+total_limits <- seasonal_limits %>%
+  group_by(site) %>%
+  summarise(max_days = sum(max_days)) %>%
+  mutate(season = "total") # Match the 'total' label in your data
+
+# C. Combine into one Master Lookup
+all_day_limits <- bind_rows(seasonal_limits, total_limits)
+
+```
+
+```{r}
+#| fig-width: 14
+#| fig-asp: 0.6
+#| warning: false
+
+incidence_data <- frog_community_season2 %>%
+  # A. JOIN THE LIMITS (Attaches the correct 'max_days' to every row)
+  left_join(all_day_limits, by = c("site", "season")) %>%
+  # Create ID
+  unite("Group_ID", site, season, sep = "__", remove = FALSE) %>%
+  group_by(Group_ID, site, season) %>%
+  # Convert counts to binary Presence(1)/Absence(0)
+  mutate(across(where(is.numeric) & !c(SamplingDay, max_days), ~ ifelse(. > 0, 1, 0))) %>%
+  summarise(
+    # B. Extract the Limit (it's already in the column from the join)
+    T_days = first(max_days),
+    # C. Sum Species Counts (Exclude metadata columns!)
+    across(where(is.numeric) & !c(SamplingDay, max_days), sum),
+    .groups = "drop"
+  )
+
+# Create List
+list_data <- split(incidence_data, incidence_data$Group_ID)
+
+# Vector Cleaning Function
+clean_vector <- function(x) {
+  # 1. Extract T explicitly
+  t_val <- x$T_days
+  
+  # 2. Extract Species Counts (Remove T_days from selection)
+  counts <- x %>% 
+    select(where(is.numeric), -T_days) %>% 
+    unlist() %>% 
+    as.numeric()
+  
+  # 3. Return c(T, count1, count2...)
+  # Filter out 0s (species not seen in that season)
+  return(unname(c(t_val, counts[counts > 0])))
+}
+
+# Apply Function
+iNEXT_input <- lapply(list_data, clean_vector)
+
+# Run iNEXT
+# This will now calculate curves based on 147 days, 180 days, etc. correctly
+out <- iNEXT(iNEXT_input, q = 0, datatype = "incidence_freq", knots = 100, endpoint = 450)
+
+# Extract Results for Plotting
+season_results <- out$iNextEst$size_based %>%
+  as_tibble() %>%
+  filter(Order.q == 0) %>%
+  rename(x = t, y = qD, y.lwr = qD.LCL, y.upr = qD.UCL) %>%
+  separate(Assemblage, into = c("site", "season"), sep = "__") %>%
+  mutate(
+    season = str_to_title(season),
+    site = factor(site, levels = c("Rinyirru","Undara","Wambiana","Mourachan","Duval","Tarcutta")),
+    season = factor(season, levels = c("Spring", "Summer", "Autumn", "Winter", "Total")),
+    Method = ifelse(Method == "Observed", "Rarefaction", Method),
+    Method = factor(Method, levels = c("Rarefaction", "Extrapolation"))
+  )
+
+(rare.inext_season <- ggplot(season_results, aes(x = x, y = y, colour = season)) +
+  geom_ribbon(aes(ymin = y.lwr, ymax = y.upr, fill = season),
+              alpha = 0.15, colour = NA) +
+  geom_line(aes(linetype = Method), linewidth = 1.3) +
+  facet_wrap(~ site, scales = "free_y") +
+  scale_x_continuous(name = "Survey Effort (Days)",
+                       limits = c(0,450),
+                       breaks = seq(0, 450, by = 90)) +
+  scale_y_continuous(name = "Species Richness") +
+  scale_colour_manual(values = c("goldenrod1", "#F38181","#943CE7", "burlywood3", "black"),
+                        name = "Sampling Period",
+                      labels = c("Spring", "Summer", "Autumn", "Winter", "All season")) +
+  scale_fill_manual(values = c("goldenrod1", "#F38181","#943CE7", "burlywood3", "black"),
+                        guide = "none") +
+  scale_linetype_manual(values = c(Rarefaction = "solid", Extrapolation = "22"),
+                        guide = guide_legend(title = NULL)) +
+ my.theme() +
+  theme(
+    panel.border = element_rect(fill = NA, color = "black", linewidth = 1.5),
+    strip.text.x = element_text(size = 15, face = "bold", hjust = 0),
+    strip.background = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_text(face = "italic", size = 14)
+  ) +
+  guides(colour = guide_legend(order = 1),
+         linetype = guide_legend(order = 2)))
+
+```
+
+
+## Days to match OBM
+
+Calculate how long it takes for each seasonal start to match OBM
+
+```{r}
+# 2. Define the Function
+run_inext_seasonal <- function(group_id, data_vec) {
+  
+  # A. Look up the max days for this specific Site/Season combo
+  max_d <- seasonal_limits[[group_id]]
+  
+  # B. Create the explicit sequence of days
+  # LOGIC: Go up to 450, OR the actual max days if the season is longer than 450.
+  # This ensures short seasons extrapolate to 450, but long seasons (Total) aren't cut short.
+  target_end <- max(c(max_d, 450), na.rm = TRUE)
+  
+  day_seq <- seq(1, target_end, by = 1)
+  
+  # C. Run iNEXT
+  res <- iNEXT(list(data_vec), q = 0, datatype = "incidence_freq", size = day_seq)
+  
+  # D. Extract dataframe
+  df <- res$iNextEst$size_based %>%
+    as_tibble() %>%
+    filter(Order.q == 0) %>%
+    mutate(Group_ID = group_id) # Attach ID to split later
+    
+  return(df)
+}
+
+# 3. Run the Loop
+all_seasons_result <- map2_dfr(names(iNEXT_input), iNEXT_input, run_inext_seasonal) %>%
+  
+  # 4. Clean and Format
+  rename(day = t, richness = qD, lower.ci = qD.LCL, upper.ci = qD.UCL) %>%
+  
+  # Split the ID back into Site and Season
+  separate(Group_ID, into = c("site", "season"), sep = "__") %>%
+  
+  # Apply Factors for Plotting
+  mutate(
+    season = str_to_title(season),
+    season = recode(season, "Total" = "All season"), # Rename Total here
+    
+    site = factor(site, levels = c("Rinyirru", "Undara", "Wambiana", "Mourachan",
+                                   "Duval", "Tarcutta")),
+    season = factor(season, levels = c("Spring", "Summer", "Autumn", "Winter", "All season")),
+    Method = ifelse(Method == "Observed", "Rarefaction", Method)
+  )
+
+```
+
+
+```{r}
+days_to_reach_season <- all_seasons_result %>%
+  left_join(obm.max, by = "site") %>%
+  group_by(site,season) %>%
+  filter(round(richness, digits = 1) >= richness.max) %>%
+  slice(1) %>%
+  select(site, season, days_required = day, pam_richness = richness, obm_target = richness.max)
+```
+
+
+# Session Info
+```{r}
+sessionInfo()
+```
+
+# Cite Packages
+```{r}
+cite_packages()
+```
