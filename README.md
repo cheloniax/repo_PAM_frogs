@@ -11,4 +11,4 @@
 - **/scripts**: R code in qmd format.
     - R_code_biodiversityFrogs.qmd: R code used for all data processing, visualisation, and analyses.
 - **/supplemantary**: Supplemantary tables and figures.
-    - supporting_information.pdf: Supplementary figures S1-S3 and tables S1-S5.
+    - supporting_information.pdf: Supplementary figures S1-S4 and tables S1-S5.
